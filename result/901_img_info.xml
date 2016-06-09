@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><classification-result>
+	<environment>Tag</environment>
+<confidences>
+<confidence>
+	<result>day</result>
+	<value>0.85</value>
+</confidence><confidence>
+	<result>night</result>
+	<value>0.17</value>
+</confidence><confidence>
+	<result>Inside</result>
+	<value>-0.17</value>
+</confidence><confidence>
+	<result>not-classifiable</result>
+	<value>-0.00</value>
+</confidence></confidences></classification-result>
