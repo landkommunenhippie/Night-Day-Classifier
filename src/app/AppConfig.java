@@ -89,7 +89,7 @@ public class AppConfig {
 	public String OUTPUTFILE_PICTURE() {
 		String[] split = INPUTFILE.split("/");
 		String imageName = split[split.length - 1];
-		return String.format("%s%s%s%s", OUTPUTFILE_FOLDER, imageName,RESULT_SUFFIX, OUTPUTFILE_TYPE);
+		return String.format("%s%s%s%s", OUTPUTFILE_FOLDER, imageName,RESULT_SUFFIX, IMAGE_TYPE);
 	}
 
 
