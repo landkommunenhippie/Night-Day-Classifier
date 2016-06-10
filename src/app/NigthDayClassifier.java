@@ -67,13 +67,20 @@ public class NigthDayClassifier {
 
 		// Ergebnis im Bild einblenden
 		ImageProcessor ip = fileToClassify.getChannelProcessor();
-		Font fonti = new Font("Arial", Font.PLAIN, 100); // 100 Schriftgröße
+		// fontsize for result
+		int fontSize = ip.getWidth() / 20; 
+		//fontsize for confidences
+		int smallFontSize = fontSize/2;
+		// Postion in 2 quarter of the image
+		int horizontalPosition = ip.getWidth()/16*10;
+		int verticalPosition = ip.getHeight() / 16 * 2;
+		
+		Font fonti = new Font("Arial", Font.PLAIN, fontSize); 
 		ip.setFont(fonti);
 		ip.setColor(Color.red);
-		ip.drawString(result.getEnvironment(), 1350, 150); // (1400,150)
-															// Pixel-Position im
-															// Bild
-		Font fontii = new Font("Arial", Font.PLAIN, 50); // 50 Schriftgröße
+		ip.drawString(result.getEnvironment(), horizontalPosition, verticalPosition); 
+								
+		Font fontii = new Font("Arial", Font.PLAIN, smallFontSize); 
 		ip.setFont(fontii);
 		DecimalFormat df = new DecimalFormat("0.00");
 		String str1 = "Nacht: " + df.format(result.getProbIsNight());
@@ -81,10 +88,10 @@ public class NigthDayClassifier {
 		String str3 = "Innenraum: " + df.format(result.getProbIsInside());
 		String str4 = "unbestimmt: "
 				+ df.format(result.getProbIsNotClassifiable());
-		ip.drawString(str1, 1400, 250);
-		ip.drawString(str2, 1400, 300);
-		ip.drawString(str3, 1400, 350);
-		ip.drawString(str4, 1400, 400);
+		ip.drawString(str1,  horizontalPosition, verticalPosition + smallFontSize);
+		ip.drawString(str2,  horizontalPosition, verticalPosition + 2 * smallFontSize);
+		ip.drawString(str3,  horizontalPosition, verticalPosition + 3 * smallFontSize);
+		ip.drawString(str4,  horizontalPosition, verticalPosition + 4 * smallFontSize);
 		fileToClassify.show();
 
 	}
