@@ -3,14 +3,14 @@
 <confidences>
 <confidence>
 	<result>day</result>
-	<value>0.86</value>
+	<value>0.54</value>
 </confidence><confidence>
 	<result>night</result>
-	<value>0.06</value>
+	<value>-0.12</value>
 </confidence><confidence>
 	<result>Inside</result>
-	<value>-0.10</value>
+	<value>0.53</value>
 </confidence><confidence>
 	<result>not-classifiable</result>
-	<value>0.01</value>
+	<value>-0.07</value>
 </confidence></confidences></classification-result>
