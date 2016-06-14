@@ -72,7 +72,11 @@ public class AppConfig {
 	}
 	
 	void setINPUTFILE(String inputFileName) {
-		String name = inputFileName.split(Pattern.quote("."))[0];
+		String[] nameArr = inputFileName.split(Pattern.quote("."));
+		String name = nameArr[0];
+		if(nameArr.length > 1){
+			IMAGE_TYPE = String.format(".%s",nameArr[1]);
+		}
 		INPUTFILE = name;
 	}
 
