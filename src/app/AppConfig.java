@@ -11,8 +11,8 @@ public class AppConfig {
 	
 	// Program stuff
 	private String PATH_TO_LEARN = "files/learn/";
-	private String INPUTFILE = "files/901";
-	private String IMAGE_TYPE = ".png";
+	private String INPUTFILE = "files/";
+	private String IMAGE_TYPE = "";
 	private String XML_TYPE = ".xml";
 	private String OUTPUTFILE_FOLDER = "result/";
 	private String RESULT_SUFFIX  = "_img_info";

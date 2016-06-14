@@ -3,15 +3,16 @@ package classifier;
 public class ClassificationResult {
 
 	private final String environment;
+	private final String name;
 	private final double probIsDay;
 	private final double probIsNight;
 	private final double probIsInside;
 	private final double probIsNotClassifiable;
 
-	public ClassificationResult(int maxi, double probIsDay, double probIsNight,
+	public ClassificationResult(String name,int maxi, double probIsDay, double probIsNight,
 			double probIsInside, double probIsNotClassifiable) {
 		super();
-		
+		this.name = name;
 
 		// Auswertung
 		if (maxi == 0) {
@@ -47,6 +48,10 @@ public class ClassificationResult {
 
 	public double getProbIsNotClassifiable() {
 		return probIsNotClassifiable;
+	}
+
+	public String getName() {
+		return name;
 	}
 
 }

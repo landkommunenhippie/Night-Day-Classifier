@@ -81,7 +81,7 @@ public class Main_Classifier {
 			}
 		}
 		System.out.println("Finished Classification");
-		return new ClassificationResult(maxi, out[1], out[0], out[2], out[3]);
+		return new ClassificationResult(AppConfig.getConfig().INPUTFILE() ,maxi, out[1], out[0], out[2], out[3]);
 
 	}
 

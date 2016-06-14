@@ -49,9 +49,9 @@ public class NigthDayClassifier {
 		if(inputfile.contains(".")){
 			ImagePlus fileToClassify = IJ.openImage(inputfile);
 			ClassificationResult result = classifier.classify(fileToClassify);
+			showResult(fileToClassify, result, true);
 			createResultFiles(fileToClassify, result);
-			showResult(fileToClassify, result);
-
+			
 		}else{
 			File dir = new File(inputfile);
 			
@@ -60,6 +60,7 @@ public class NigthDayClassifier {
 				AppConfig.getConfig().setINPUTFILE(imageFile.getName());
 				ImagePlus fileToClassify = IJ.openImage(imageFile.getAbsolutePath());
 				ClassificationResult result = classifier.classify(fileToClassify);
+				showResult(fileToClassify, result, false);
 				createResultFiles(fileToClassify, result);
 			}
 
@@ -86,7 +87,7 @@ public class NigthDayClassifier {
 
 
 	private static void showResult(ImagePlus fileToClassify,
-			ClassificationResult result) {
+			ClassificationResult result, boolean popup) {
 
 		// Ergebnis im Bild einblenden
 		ImageProcessor ip = fileToClassify.getChannelProcessor();
@@ -115,7 +116,8 @@ public class NigthDayClassifier {
 		ip.drawString(str2,  horizontalPosition, verticalPosition + 2 * smallFontSize);
 		ip.drawString(str3,  horizontalPosition, verticalPosition + 3 * smallFontSize);
 		ip.drawString(str4,  horizontalPosition, verticalPosition + 4 * smallFontSize);
-		fileToClassify.show();
-
+		if(popup){
+			fileToClassify.show();
+		}
 	}
 }

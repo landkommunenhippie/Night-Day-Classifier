@@ -1,10 +1,14 @@
 package app;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLOutputFactory;
@@ -15,6 +19,9 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import xml.Info;
+import xml.Video;
+import xml.frames.Frames;
 import classifier.ClassificationResult;
 import ij.ImagePlus;
 import ij.io.FileSaver;
@@ -42,76 +49,30 @@ public class ResultFileSaver {
 	 */
 	public static void saveXMLFile(ClassificationResult result) throws XMLStreamException, URISyntaxException, IOException{
 
-		// create an XMLOutputFactory
-	    XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
-	    // create XMLEventWriter
-	    XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(new FileOutputStream(AppConfig.getConfig().OUTPUTFILE_XML()));
-	    
-	    // create an EventFactory
-	    XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-	    XMLEvent newLine = eventFactory.createDTD("\n");
-	    // create and write Start Tag
-	    StartDocument startDocument = eventFactory.createStartDocument();
-	    eventWriter.add(startDocument);
-	    
-	    // create config open tag
-	    StartElement configStartElement = eventFactory.createStartElement("",
-	        "", "classification-result");
-	    eventWriter.add(configStartElement);
-	    eventWriter.add(newLine);
-	    
-	    createNode(eventWriter, "environment", result.getEnvironment());
-	    
-	    StartElement confidencesStartElement = eventFactory.createStartElement("",
-		        "", "confidences");
-	    eventWriter.add(confidencesStartElement);
-	    eventWriter.add(newLine);
-	    
-	    
-	    createConfidenceNode(eventWriter, "day", result.getProbIsDay());
-	    createConfidenceNode(eventWriter, "night", result.getProbIsNight());
-	    createConfidenceNode(eventWriter, "Inside", result.getProbIsInside());
-	    createConfidenceNode(eventWriter, "not-classifiable", result.getProbIsNotClassifiable());
-	    
-	    eventWriter.add(eventFactory.createEndElement("", "", "confidences"));
-	    eventWriter.add(eventFactory.createEndElement("", "", "classification-result"));
-	    eventWriter.add(newLine);
-	    eventWriter.add(eventFactory.createEndDocument());
-	    eventWriter.close();
+		try {
+			JAXBContext jc = JAXBContext.newInstance(Video.class);
+			Marshaller marshaller = jc.createMarshaller();
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+			marshaller.setProperty(Marshaller.JAXB_NO_NAMESPACE_SCHEMA_LOCATION, "objectDetection.xsd");
+			marshaller.marshal(createVidoXml(result), new FileOutputStream(AppConfig.getConfig().OUTPUTFILE_XML()));
+		} catch (JAXBException | FileNotFoundException e) {
+			System.out.println("Failed to create xml file");
+		}
 	}
 	
-	private static void createConfidenceNode(XMLEventWriter eventWriter,String category, double value) throws XMLStreamException{
+	public static Video createVidoXml(ClassificationResult result){
 		
-		DecimalFormat df = new DecimalFormat("0.00");
 		
-		XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-		StartElement confidenceStartElement = eventFactory.createStartElement("",
-		        "", "confidence");
-		eventWriter.add(confidenceStartElement);
-	    eventWriter.add(eventFactory.createDTD("\n"));
-	    	createNode(eventWriter, "result", category);
-	    	createNode(eventWriter, "value", df.format(value));
-	    eventWriter.add(eventFactory.createEndElement("", "", "confidence"));
-	    
+		Info info = new Info();
+		info.setFile(result.getName());
+		info.setHash(result.getName());
+		
+		Frames frames = new Frames();
+		frames.setFrame(result);
+		
+		Video video = new Video();
+		video.setInfo(info);
+		video.setFrames(frames);
+		return video;
 	}
-	
-	 private static void createNode(XMLEventWriter eventWriter, String name,
-		      String value) throws XMLStreamException {
-
-		    XMLEventFactory eventFactory = XMLEventFactory.newInstance();
-		    XMLEvent end = eventFactory.createDTD("\n");
-		    XMLEvent tab = eventFactory.createDTD("\t");
-		    // create Start node
-		    StartElement sElement = eventFactory.createStartElement("", "", name);
-		    eventWriter.add(tab);
-		    eventWriter.add(sElement);
-		    // create Content
-		    Characters characters = eventFactory.createCharacters(value);
-		    eventWriter.add(characters);
-		    // create End node
-		    EndElement eElement = eventFactory.createEndElement("", "", name);
-		    eventWriter.add(eElement);
-		    eventWriter.add(end);
-
-		  }
 }
