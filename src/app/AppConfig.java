@@ -27,8 +27,10 @@ public class AppConfig {
 			String string = argumentMap.get("-i");
 			String[] imageFile = string.split(Pattern.quote("."));
 			this.INPUTFILE = imageFile[0];
-			if (imageFile.length > 0) {
+			if (imageFile.length > 1) {
 				this.IMAGE_TYPE = String.format(".%s", imageFile[1]);
+			}else{
+				this.IMAGE_TYPE = "";
 			}
 		}
 		if (checkArgExistence(argumentMap, "-o")) {

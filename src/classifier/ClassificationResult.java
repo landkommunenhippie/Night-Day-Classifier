@@ -22,7 +22,7 @@ public class ClassificationResult {
 		} else if (maxi == 2) {
 			this.environment =  "Innenraum";
 		} else {
-			this.environment =  "unbestimmt";
+			this.environment =  "Schlechtes Wetter";
 		}
 		this.probIsDay = probIsDay;
 		this.probIsNight = probIsNight;
