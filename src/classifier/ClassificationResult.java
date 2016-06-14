@@ -7,7 +7,7 @@ public class ClassificationResult {
 	private final double probIsDay;
 	private final double probIsNight;
 	private final double probIsInside;
-	private final double probIsNotClassifiable;
+	private final double probIsBadWeather;
 
 	public ClassificationResult(String name,int maxi, double probIsDay, double probIsNight,
 			double probIsInside, double probIsNotClassifiable) {
@@ -27,7 +27,7 @@ public class ClassificationResult {
 		this.probIsDay = probIsDay;
 		this.probIsNight = probIsNight;
 		this.probIsInside = probIsInside;
-		this.probIsNotClassifiable = probIsNotClassifiable;
+		this.probIsBadWeather = probIsNotClassifiable;
 	}
 
 	public String getEnvironment() {
@@ -46,8 +46,8 @@ public class ClassificationResult {
 		return probIsInside;
 	}
 
-	public double getProbIsNotClassifiable() {
-		return probIsNotClassifiable;
+	public double getProbIsBadWeather() {
+		return probIsBadWeather;
 	}
 
 	public String getName() {

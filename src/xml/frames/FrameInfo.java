@@ -12,6 +12,13 @@ public class FrameInfo {
 	@XmlElement
 	private Night night;
 	
+	@XmlElement
+	private Inside inside;
+
+	@XmlElement(name="bad-weather")
+	private BadWeather badWeather;
+	
+	
 	public void setConfidences(ClassificationResult result){
 		Day day = new Day();
 		day.setCofidence(result.getProbIsDay());
@@ -19,5 +26,11 @@ public class FrameInfo {
 		Night night = new Night();
 		night.setCofidence(result.getProbIsNight());
 		this.night = night;
+		Inside ins = new Inside();
+		ins.setCofidence(result.getProbIsInside());
+		this.inside  = ins;
+		BadWeather bw = new BadWeather();
+		bw.setCofidence(result.getProbIsBadWeather());
+		this.badWeather = bw;
 	}
 }

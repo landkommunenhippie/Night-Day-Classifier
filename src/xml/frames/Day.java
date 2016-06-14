@@ -1,13 +1,5 @@
 package xml.frames;
 
-import javax.xml.bind.annotation.XmlAttribute;
-
-public class Day {
+public class Day extends ConfidenceValue{
 	
-	@XmlAttribute(name="confidence")
-	private double conf;
-	
-	public void setCofidence(double confidence){
-		this.conf = confidence;
-	}
 }
