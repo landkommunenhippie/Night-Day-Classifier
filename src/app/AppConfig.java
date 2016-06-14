@@ -11,18 +11,12 @@ public class AppConfig {
 	
 	// Program stuff
 	private String PATH_TO_LEARN = "files/learn/";
-	private String INPUTFILE = "files/901";
-	private String IMAGE_TYPE = ".png";
+	private String INPUTFILE = "files/";
+	private String IMAGE_TYPE = "";
 	private String XML_TYPE = ".xml";
 	private String OUTPUTFILE_FOLDER = "result/";
-	private String OUTPUTFILE_TYPE = ".png";
 	private String RESULT_SUFFIX  = "_img_info";
-	
-	
-	// KNN stuff
-	/** Number of Classifications*/
-	private int nrOfOutputs = 4;  
-	private int nrOfNeurones = 10;  
+	private boolean isDebug = false; 
 	
 	
 	AppConfig(Map<String, String> argumentMap) {
@@ -40,7 +34,9 @@ public class AppConfig {
 		if (checkArgExistence(argumentMap, "-o")) {
 			this.OUTPUTFILE_FOLDER = String.format("%s",
 					argumentMap.get("-o"));
-			
+		}
+		if (checkArgExistence(argumentMap, "-d")) {
+			this.isDebug = Boolean.valueOf(argumentMap.get("-d"));
 		}
 		
 		AppConfig.INSTANCE = this;
@@ -74,6 +70,12 @@ public class AppConfig {
 	public String INPUTFILE() {
 		return String.format("%s%s",INPUTFILE, IMAGE_TYPE);
 	}
+	
+	void setINPUTFILE(String inputFileName) {
+		String name = inputFileName.split(Pattern.quote("."))[0];
+		INPUTFILE = name;
+	}
+
 
 
 	public String IMAGE_TYPE() {
@@ -97,6 +99,10 @@ public class AppConfig {
 		String[] split = INPUTFILE.split("/");
 		String imageName = split[split.length - 1];
 		return String.format("%s%s%s%s", OUTPUTFILE_FOLDER, imageName,RESULT_SUFFIX,XML_TYPE);
+	}
+	
+	public boolean IS_DEBUG(){
+		return isDebug;
 	}
 
 

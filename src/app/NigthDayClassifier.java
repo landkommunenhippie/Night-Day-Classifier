@@ -1,11 +1,13 @@
 package app;
 
+import filefilter.ImageFileFilter;
 import ij.IJ;
 import ij.ImagePlus;
 import ij.process.ImageProcessor;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -41,12 +43,33 @@ public class NigthDayClassifier {
 		Main_Classifier classifier = new Main_Classifier();
 		classifier.train(AppConfig.getConfig().PATH_TO_LEARN());
 
-		ImagePlus fileToClassify = IJ.openImage(AppConfig.getConfig()
-				.INPUTFILE());
-		ClassificationResult result = classifier.classify(fileToClassify);
+		String inputfile = AppConfig.getConfig()
+				.INPUTFILE();
+		
+		if(inputfile.contains(".")){
+			ImagePlus fileToClassify = IJ.openImage(inputfile);
+			ClassificationResult result = classifier.classify(fileToClassify);
+			createResultFiles(fileToClassify, result);
+			showResult(fileToClassify, result);
 
-		showResult(fileToClassify, result);
+		}else{
+			File dir = new File(inputfile);
+			
+			for(File imageFile : dir.listFiles(new ImageFileFilter())){
+				
+				AppConfig.getConfig().setINPUTFILE(imageFile.getName());
+				ImagePlus fileToClassify = IJ.openImage(imageFile.getAbsolutePath());
+				ClassificationResult result = classifier.classify(fileToClassify);
+				createResultFiles(fileToClassify, result);
+			}
 
+		}
+		
+		
+	}
+
+	private static void createResultFiles(ImagePlus fileToClassify, ClassificationResult result) {
+		
 		ResultFileSaver.saveImageFileToPng(fileToClassify);
 		try {
 			ResultFileSaver.saveXMLFile(result);
