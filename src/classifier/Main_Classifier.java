@@ -42,20 +42,33 @@ public class Main_Classifier {
 		// Trainingsbeispiele (können auch mehr sein)
 		ImagePlus imp1 = IJ.openImage(String
 				.format("%s/night.jpg", pathToLearn));
-		ImagePlus imp2 = IJ.openImage(String.format("%s/day.png", pathToLearn));
-		ImagePlus imp3 = IJ.openImage(String.format("%s/inside.jpg",
+		ImagePlus imp2 = IJ.openImage(String.format("%s/night2.jpg",
+				pathToLearn));
+		ImagePlus imp3 = IJ.openImage(String.format("%s/day.png", pathToLearn));
+		ImagePlus imp4 = IJ
+				.openImage(String.format("%s/day2.png", pathToLearn));
+		ImagePlus imp5 = IJ.openImage(String.format("%s/inside.jpg",
+				pathToLearn));
+		ImagePlus imp6 = IJ.openImage(String.format("%s/inside2.png",
+				pathToLearn));
+		ImagePlus imp7 = IJ
+				.openImage(String.format("%s/dawn.png", pathToLearn));
+		ImagePlus imp8 = IJ.openImage(String.format("%s/waether.png",
 				pathToLearn));
 
 		double[] a = createVector(imp1);
-
 		double[] b = createVector(imp2);
-
 		double[] c = createVector(imp3);
+		double[] d = createVector(imp4);
+		double[] e = createVector(imp5);
+		double[] f = createVector(imp6);
+		double[] g = createVector(imp7);
+		double[] h = createVector(imp8);
 
-		double[][] input = new double[][] { a, b, c }; // Eingabe der
+		double[][] input = new double[][] { a, b, c, d, e, f, g, h }; // Eingabe der
 		// Trainingsbeispiele
-		double[][] output = new double[][] { { 1, 0, 0, 0 }, { 0, 1, 0, 0 },
-				{ 0, 0, 1, 0 } };// gewünschte Ausgabe (Einheitsmatrix)
+		double[][] output = new double[][] { { 1, 0, 0, 0 }, { 1, 0, 0, 0 },{ 0, 1, 0, 0 },{ 0, 1, 0, 0 },{ 0, 0, 1, 0 }, 
+				{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } ,{ 0, 0, 0, 1 }  };// gewünschte Ausgabe (Einheitsmatrix)
 
 		TrainingSampleLesson lektion = new TrainingSampleLesson(input, output);// Beginn
 		// Trainingsphase
@@ -65,7 +78,8 @@ public class Main_Classifier {
 	}
 
 	public ClassificationResult classify(ImagePlus inputFile) {
-		System.out.println(String.format("Start classification of %s", AppConfig.getConfig().INPUTFILE()));
+		System.out.println(String.format("Start classification of %s",
+				AppConfig.getConfig().INPUTFILE()));
 		double[] pixelCharacteristic = createVector(inputFile);
 
 		double[] out = netz.propagate(pixelCharacteristic); // Anwendungsphase
@@ -76,12 +90,13 @@ public class Main_Classifier {
 			if (out[maxi] < out[i]) {
 				maxi = i;
 			}
-			if(AppConfig.getConfig().IS_DEBUG()){
+			if (AppConfig.getConfig().IS_DEBUG()) {
 				System.out.println(out[i] + ", ");
 			}
 		}
 		System.out.println("Finished Classification");
-		return new ClassificationResult(AppConfig.getConfig().INPUTFILE() ,maxi, out[1], out[0], out[2], out[3]);
+		return new ClassificationResult(AppConfig.getConfig().INPUTFILE(),
+				maxi, out[1], out[0], out[2], out[3]);
 
 	}
 
@@ -117,10 +132,10 @@ public class Main_Classifier {
 			// relativer Anteil
 			zahl[t] = zahl[t] / total;
 		}
-		
+
 		return zahl;
 	}
-	
+
 	private double[] createVector(ImagePlus imp1) {
 		double[] featureVector = zaehl(imp1);
 		if (AppConfig.getConfig().IS_DEBUG()) {
@@ -135,6 +150,5 @@ public class Main_Classifier {
 			System.out.println(featureVector[i]);
 		}
 	}
-
 
 }

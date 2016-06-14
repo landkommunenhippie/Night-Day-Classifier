@@ -110,7 +110,7 @@ public class NigthDayClassifier {
 		String str1 = "Nacht: " + df.format(result.getProbIsNight());
 		String str2 = "Tag: " + df.format(result.getProbIsDay());
 		String str3 = "Innenraum: " + df.format(result.getProbIsInside());
-		String str4 = "unbestimmt: "
+		String str4 = "Schlechtwetter: "
 				+ df.format(result.getProbIsNotClassifiable());
 		ip.drawString(str1,  horizontalPosition, verticalPosition + smallFontSize);
 		ip.drawString(str2,  horizontalPosition, verticalPosition + 2 * smallFontSize);
