@@ -13,8 +13,12 @@ public class FrameInfo {
 	private Night night;
 	
 	@XmlElement
-	private Inside inside;
+	private Garage garage;
+	
+	@XmlElement
+	private Tunnel tunnel;
 
+	
 	@XmlElement(name="bad-weather")
 	private BadWeather badWeather;
 	
@@ -26,9 +30,12 @@ public class FrameInfo {
 		Night night = new Night();
 		night.setCofidence(result.getProbIsNight());
 		this.night = night;
-		Inside ins = new Inside();
-		ins.setCofidence(result.getProbIsInside());
-		this.inside  = ins;
+		Garage garage = new Garage();
+		garage.setCofidence(result.getProbIsGarage());
+		this.garage  = garage;
+		Tunnel tunnel = new Tunnel();
+		tunnel.setCofidence(result.getProbIsTunnel());
+		this.tunnel  = tunnel;
 		BadWeather bw = new BadWeather();
 		bw.setCofidence(result.getProbIsBadWeather());
 		this.badWeather = bw;

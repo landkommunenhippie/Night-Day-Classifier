@@ -13,20 +13,20 @@ public class Main_Classifier {
 
 	// Groesse des Netzes einstellen
 
-	// Anzahl Klassen (mit Zurückweisungsklasse)
-	private int outputClasses = 4;
+	// Anzahl Klassen (mit Rueckweisungsklasse)
+	private int outputClasses = 5;
 	// Anzahl der Neuronen in der Hidden-Schicht
-	private int nhide = 10;
+	private int nhide = 30;
 	// Groesse des Eigenschaftsvektors
-	private int nin = 9;
+	private int nin = 28;
 
 	// Parameter für Lernalgorithmus
-	private int durchlauf = 1000;
+	private int durchlauf = 5000;
 	private double epsilon = 0.2;
 
 	public Main_Classifier() {
 
-		// KNN (künstliches neuronales Netz)
+		// KNN (kuenstliches neuronales Netz)
 		NeuralNetworkDescriptor knnDescriptor = new NeuralNetworkDescriptor(
 				nin, nhide, outputClasses); // Größe
 
@@ -39,36 +39,25 @@ public class Main_Classifier {
 
 	public void train(String pathToLearn) {
 		System.out.println("Start Training");
-		// Trainingsbeispiele (können auch mehr sein)
+		// Trainingsbeispiele (koennen auch mehr sein)
 		ImagePlus imp1 = IJ.openImage(String
 				.format("%s/night.jpg", pathToLearn));
-		ImagePlus imp2 = IJ.openImage(String.format("%s/night2.jpg",
+		ImagePlus imp2 = IJ.openImage(String.format("%s/day.png", pathToLearn));
+		ImagePlus imp3 = IJ.openImage(String.format("%s/inside.jpg",
 				pathToLearn));
-		ImagePlus imp3 = IJ.openImage(String.format("%s/day.png", pathToLearn));
-		ImagePlus imp4 = IJ
-				.openImage(String.format("%s/day2.png", pathToLearn));
-		ImagePlus imp5 = IJ.openImage(String.format("%s/inside.jpg",
+		ImagePlus imp4 = IJ.openImage(String.format("%s/waether.png",
 				pathToLearn));
-		ImagePlus imp6 = IJ.openImage(String.format("%s/inside2.png",
-				pathToLearn));
-		ImagePlus imp7 = IJ
-				.openImage(String.format("%s/dawn.png", pathToLearn));
-		ImagePlus imp8 = IJ.openImage(String.format("%s/waether.png",
-				pathToLearn));
+		ImagePlus imp5=IJ.openImage(String.format("%s/inside3.png",	pathToLearn));
 
 		double[] a = createVector(imp1);
 		double[] b = createVector(imp2);
 		double[] c = createVector(imp3);
 		double[] d = createVector(imp4);
 		double[] e = createVector(imp5);
-		double[] f = createVector(imp6);
-		double[] g = createVector(imp7);
-		double[] h = createVector(imp8);
 
-		double[][] input = new double[][] { a, b, c, d, e, f, g, h }; // Eingabe der
+		double[][] input = new double[][] { a, b, c, d, e }; // Eingabe der
 		// Trainingsbeispiele
-		double[][] output = new double[][] { { 1, 0, 0, 0 }, { 1, 0, 0, 0 },{ 0, 1, 0, 0 },{ 0, 1, 0, 0 },{ 0, 0, 1, 0 }, 
-				{ 0, 0, 1, 0 },{ 0, 0, 0, 1 } ,{ 0, 0, 0, 1 }  };// gewünschte Ausgabe (Einheitsmatrix)
+		double[][] output = new double[][] { {1,0,0,0,0},{0,1,0,0,0},{0,0,1,0,0},{0,0,0,1,0},{0,0,0,0,1}};// gewuenschte Ausgabe (Einheitsmatrix)
 
 		TrainingSampleLesson lektion = new TrainingSampleLesson(input, output);// Beginn
 		// Trainingsphase
@@ -96,7 +85,7 @@ public class Main_Classifier {
 		}
 		System.out.println("Finished Classification");
 		return new ClassificationResult(AppConfig.getConfig().INPUTFILE(),
-				maxi, out[1], out[0], out[2], out[3]);
+				maxi, out[1], out[0], out[2], out[3], out[4]);
 
 	}
 
@@ -105,28 +94,126 @@ public class Main_Classifier {
 	// Eigenschaftsvektor des Bildes
 	public double[] zaehl(ImagePlus imp) {
 		double[] zahl = new double[nin];
-
+		double sum=0;
 		for (int i = 0; i < imp.getHeight(); i++) {
 			for (int j = 0; j < imp.getWidth(); j++) {
 				// 4, weil Einteilung der Farben in 3 Klassen
-				for (int t = 0; t < 4; t++) {
-					if (imp.getPixel(i, j)[t] < 85) { // 85=255/3
-						zahl[t]++;
-
-					} else if (imp.getPixel(i, j)[t] > 170) {// 170=255*2/3
-						// 6, weil 3 Klassen insgesamt*2 Klassen bereits
-						// abgearbeitet (dient Positionierung im Array)
-						zahl[t + 6]++;
+				//for (int t = 0; t < 3; t++) {
+				int rot=imp.getPixel(i, j)[0];
+				int gruen=imp.getPixel(i, j)[1];
+				int blau=imp.getPixel(i, j)[2];
+				sum=sum+rot+gruen+blau;
+					if (rot < 85) { // 85=255/3
+						if (gruen < 85) {
+							if (blau < 85) {
+								zahl[0]++;
+							}
+							if (blau > 170) {
+								zahl[2]++;
+							}
+							else {
+								zahl[1]++;
+							}
+						}
+						if (gruen >170) {
+							if (blau < 85) {
+								zahl[6]++;
+							}
+							if (blau > 170) {
+								zahl[8]++;
+							}
+							else {
+								zahl[7]++;
+							}
+						}
+						else {
+							if (blau < 85) {
+								zahl[3]++;
+							}
+							if (blau > 170) {
+								zahl[5]++;
+							}
+							else {
+								zahl[4]++;
+							}
+						}
+					} 
+					
+					if (rot > 170) {
+						if (gruen < 85) {
+							if (blau < 85) {
+								zahl[9]++;
+							}
+							if (blau > 170) {
+								zahl[11]++;
+							}
+							else {
+								zahl[10]++;
+							}
+						}
+						if (gruen >170) {
+							if (blau < 85) {
+								zahl[15]++;
+							}
+							if (blau > 170) {
+								zahl[17]++;
+							}
+							else {
+								zahl[16]++;
+							}
+						}
+						else {
+							if (blau < 85) {
+								zahl[12]++;
+							}
+							if (blau > 170) {
+								zahl[14]++;
+							}
+							else {
+								zahl[13]++;
+							}
+						}
 					} else {
-						// 3, weil 3 Klassen insgesamt*1 Klassen bereits
-						// abgearbeitet (dient Positionierung im Array)
-						zahl[t + 3]++;
+						if (gruen < 85) {
+							if (blau < 85) {
+								zahl[18]++;
+							}
+							if (blau > 170) {
+								zahl[20]++;
+							}
+							else {
+								zahl[19]++;
+							}
+						}
+						if (gruen >170) {
+							if (blau < 85) {
+								zahl[24]++;
+							}
+							if (blau > 170) {
+								zahl[26]++;
+							}
+							else {
+								zahl[25]++;
+							}
+						}
+						else {
+							if (blau < 85) {
+								zahl[21]++;
+							}
+							if (blau > 170) {
+								zahl[23]++;
+							}
+							else {
+								zahl[22]++;
+							}
+						}
 					}
 
-				}
+				//}
 			}
 		}
-		// mit 3 multiplizieren, weil 3 Farbkanäle
+		zahl[27]=sum/255;
+		// mit 3 multiplizieren, weil 3 Farbkanaele
 		int total = imp.getHeight() * imp.getWidth() * 3;
 		for (int t = 0; t < zahl.length; t++) {
 			// relativer Anteil

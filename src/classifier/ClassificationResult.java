@@ -6,11 +6,12 @@ public class ClassificationResult {
 	private final String name;
 	private final double probIsDay;
 	private final double probIsNight;
-	private final double probIsInside;
+	private final double probIsGarage;
 	private final double probIsBadWeather;
+	private double probIsTunnel;
 
 	public ClassificationResult(String name,int maxi, double probIsDay, double probIsNight,
-			double probIsInside, double probIsNotClassifiable) {
+			double probIsGarage, double probIsWeather, double probIsTunnel) {
 		super();
 		this.name = name;
 
@@ -19,15 +20,16 @@ public class ClassificationResult {
 			this.environment = "Nacht";
 		} else if (maxi == 1) {
 			this.environment =  "Tag";
-		} else if (maxi == 2) {
+		} else if (maxi == 2 || maxi == 4) {
 			this.environment =  "Innenraum";
 		} else {
-			this.environment =  "Schlechtes Wetter";
+			this.environment =  "Wetter";
 		}
 		this.probIsDay = probIsDay;
 		this.probIsNight = probIsNight;
-		this.probIsInside = probIsInside;
-		this.probIsBadWeather = probIsNotClassifiable;
+		this.probIsGarage = probIsGarage;
+		this.probIsBadWeather = probIsWeather;
+		this.probIsTunnel = probIsTunnel;
 	}
 
 	public String getEnvironment() {
@@ -42,9 +44,14 @@ public class ClassificationResult {
 		return probIsNight;
 	}
 
-	public double getProbIsInside() {
-		return probIsInside;
+	public double getProbIsGarage() {
+		return probIsGarage;
 	}
+	
+	public double getProbIsTunnel() {
+		return probIsTunnel;
+	}
+
 
 	public double getProbIsBadWeather() {
 		return probIsBadWeather;

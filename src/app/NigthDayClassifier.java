@@ -109,13 +109,16 @@ public class NigthDayClassifier {
 		DecimalFormat df = new DecimalFormat("0.00");
 		String str1 = "Nacht: " + df.format(result.getProbIsNight());
 		String str2 = "Tag: " + df.format(result.getProbIsDay());
-		String str3 = "Innenraum: " + df.format(result.getProbIsInside());
-		String str4 = "Schlechtwetter: "
+		String str3 = "Garage: " + df.format(result.getProbIsGarage());
+		String str4 = "Tunnel: " + df.format(result.getProbIsTunnel());
+		String str5 = "Wetter: "
 				+ df.format(result.getProbIsBadWeather());
 		ip.drawString(str1,  horizontalPosition, verticalPosition + smallFontSize);
 		ip.drawString(str2,  horizontalPosition, verticalPosition + 2 * smallFontSize);
 		ip.drawString(str3,  horizontalPosition, verticalPosition + 3 * smallFontSize);
 		ip.drawString(str4,  horizontalPosition, verticalPosition + 4 * smallFontSize);
+		ip.drawString(str5,  horizontalPosition, verticalPosition + 5 * smallFontSize);
+		
 		if(popup){
 			fileToClassify.show();
 		}

@@ -11,8 +11,9 @@ public class AppConfig {
 	
 	// Program stuff
 	private String PATH_TO_LEARN = "result/files/learn/";
-	private String INPUTFILE = "result/files/036";
-	private String IMAGE_TYPE = ".png";
+	private String INPUTFILE = "result/files/";
+	private String IMAGE_TYPE = "";
+	private String OUTPUT_IMAGE_TYPE = ".png";
 	private String XML_TYPE = ".xml";
 	private String OUTPUTFILE_FOLDER = "result/";
 	private String RESULT_SUFFIX  = "_img_info";
@@ -97,7 +98,7 @@ public class AppConfig {
 	public String OUTPUTFILE_PICTURE() {
 		String[] split = INPUTFILE.split("/");
 		String imageName = split[split.length - 1];
-		return String.format("%s%s%s%s", OUTPUTFILE_FOLDER, imageName,RESULT_SUFFIX, IMAGE_TYPE);
+		return String.format("%s%s%s%s", OUTPUTFILE_FOLDER, imageName,RESULT_SUFFIX, OUTPUT_IMAGE_TYPE);
 	}
 
 
